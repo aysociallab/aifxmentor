@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | AI Forex Mentor</title>
+    <title>Dashboard | AI Forex Mentor V2</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #0f172a; --panel-bg: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #0ea5e9; --accent-hover: #0284c7; --border: #334155; --success: #10b981; --danger: #ef4444; --warning: #f59e0b; }
@@ -145,7 +145,7 @@
     <header>
         <div class="logo">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-            AI Forex<span>Mentor</span>
+            AI Forex<span>Mentor</span> <span style="font-size:0.6rem; background:var(--accent); color:white; padding:2px 6px; border-radius:10px; vertical-align:middle; margin-left:5px;">V2 BETA</span>
         </div>
         <div class="user-controls">
             <div class="prop-firm-toggle" id="prop-firm-btn">
@@ -224,11 +224,10 @@
 
                 <div class="form-group" style="margin-bottom: 0.75rem;">
                     <label style="display: flex; align-items: center;">
-                        Telegram Chat ID (For Live Alerts)
-                        <a href="#" onclick="document.getElementById('telegram-help-modal').style.display='flex'; return false;" style="color: var(--accent); font-size: 0.75rem; text-decoration: none; margin-left: 8px;">(?) How to get this</a>
+                        Telegram Chat ID (Live Alerts)
+                        <a href="#" onclick="document.getElementById('telegram-help-modal').style.display='flex'; return false;" style="color: var(--accent); font-size: 0.75rem; text-decoration: none; margin-left: 8px;">(?) Guide</a>
                     </label>
                     <input type="text" id="setting-telegram" class="form-control" style="padding: 0.5rem; font-size: 0.9rem;" placeholder="e.g. 123456789">
-                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Leave blank to disable push notifications.</div>
                 </div>
                 
                 <div class="form-row" style="margin-bottom: 0;">
@@ -246,7 +245,27 @@
                     <label>Max Daily Drawdown (Loss) %</label>
                     <input type="number" id="setting-daily-risk" class="form-control" step="0.1" style="padding: 0.5rem; font-size: 0.9rem;">
                 </div>
+
+                <div class="settings-header" style="margin-top: 1.5rem; color: #a855f7;">🧠 AI Engine Configuration (BYOK)</div>
                 
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label>Processing Engine</label>
+                    <select id="setting-ai-model" class="form-control" style="padding: 0.5rem; font-size: 0.9rem; border-color: #a855f7;">
+                        <option value="deepmatrix">DeepMatrix Native (Managed)</option>
+                        <option value="gpt4o">OpenAI GPT-4o (User Key)</option>
+                        <option value="claude35">Anthropic Claude 3.5 (User Key)</option>
+                        <option value="llama3">Groq Llama-3 70B (Free Key)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="api-key-group" style="display: none; margin-bottom: 0.75rem;">
+                    <label>Your API Key <span style="font-size:0.7rem; color:var(--text-muted); font-weight:normal;">(Stored safely in local browser)</span></label>
+                    <input type="password" id="setting-api-key" class="form-control" style="padding: 0.5rem; font-size: 0.9rem;" placeholder="Paste API Key here...">
+                </div>
+
+                <div id="free-tier-warning" style="display: none; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--warning); padding: 10px; border-radius: 6px; font-size: 0.8rem; color: var(--warning); line-height: 1.4; margin-bottom: 0.75rem;">
+                    ⚠️ <strong>Free Tier Active:</strong> Free models are great for UI testing, but lack the advanced quantitative reasoning and context windows required for institutional analysis. For live trading, we strongly advise upgrading to GPT-4o or Claude 3.5.
+                </div>
                 <button class="btn-analyze" id="save-settings-btn" style="width: 100%; height: 36px; font-size: 0.85rem; margin-top: 10px;">Save Parameters</button>
             </div>
         </div>
@@ -413,7 +432,7 @@
             <div class="form-panel-bottom" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
                 <div class="form-group" style="margin-top: 0.5rem;">
                     <label>Trade Notes & Confluence</label>
-                    <textarea id="modal-notes" class="form-control" rows="3" placeholder="Why are you taking this setup? (System warnings will auto-append here upon save)."></textarea>
+                    <textarea id="modal-notes" class="form-control" rows="3" placeholder="Why are you taking this setup?"></textarea>
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 1rem;">
@@ -456,39 +475,6 @@
                 </table>
             </div>
         </div>
-
-        <div class="control-panel" style="margin-top: 2rem;">
-            <h2 class="ai-title" style="margin-bottom: 0.5rem;">📖 Terminal Glossary</h2>
-            <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Understanding the institutional metrics used in AI Forex Mentor.</div>
-            
-            <div class="glossary-grid">
-                <div class="glossary-card">
-                    <h4>R-Multiple (R-Mult)</h4>
-                    <p>The ultimate measure of a trader's edge. It represents your profit relative to your initial risk. If you risk $100 on a trade and make $250, your R-Multiple is <strong>+2.5R</strong>. Prop firms prioritize traders who consistently achieve high positive R-Multiples over those with high win rates.</p>
-                </div>
-                <div class="glossary-card">
-                    <h4>Realized P/L</h4>
-                    <p>Profit or Loss that has been officially locked in and permanently added to (or subtracted from) your Account Balance. This occurs when a specific Take Profit (TP1, TP2, TP3) or your Stop Loss is physically hit in the live market.</p>
-                </div>
-                <div class="glossary-card">
-                    <h4>Live (Floating) P/L</h4>
-                    <p>The current unrealized profit or loss of active trades based on live market prices. This value fluctuates constantly and is only added to your Realized P/L when a target or stop is hit.</p>
-                </div>
-                <div class="glossary-card">
-                    <h4>Estimated Risk (Est. Risk)</h4>
-                    <p>The exact dollar amount you will lose if your Stop Loss is hit. This is calculated dynamically using your Entry Price, Stop Loss, Asset Multiplier, Total Lot Size, and Broker Leverage.</p>
-                </div>
-                <div class="glossary-card">
-                    <h4>Prop Firm Co-Pilot</h4>
-                    <p>A strict risk-management guardrail. When activated, the terminal will mathematically block you from logging any trade that violates your "Max Daily Drawdown %" limit, ensuring you never blow a funded challenge account.</p>
-                </div>
-                <div class="glossary-card">
-                    <h4>AI Trade Autopsy</h4>
-                    <p>A post-trade analysis tool. When a trade concludes, click this button to have the AI review your entry and market context. It will provide a psychological and technical breakdown of why the trade likely succeeded or failed.</p>
-                </div>
-            </div>
-        </div>
-
     </main>
 
     <div id="telegram-help-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
@@ -535,6 +521,26 @@
         let liveMarketPrices = {}; 
         
         window.currentFilteredData = [];
+
+        // --- NEW: UI Logic for BYOK AI Selection ---
+        document.getElementById('setting-ai-model').addEventListener('change', function() {
+            const val = this.value;
+            const keyGroup = document.getElementById('api-key-group');
+            const warnBox = document.getElementById('free-tier-warning');
+            
+            if (val === 'deepmatrix') {
+                keyGroup.style.display = 'none';
+                warnBox.style.display = 'none';
+            } else {
+                keyGroup.style.display = 'block';
+                if (val === 'llama3') {
+                    warnBox.style.display = 'block';
+                } else {
+                    warnBox.style.display = 'none';
+                }
+            }
+        });
+        // ------------------------------------------
 
         function calculateMT5PnL(asset, entryPrice, exitPrice, lot, isBuy) {
             if (!lot || lot <= 0 || !entryPrice || !exitPrice) return 0;
@@ -605,6 +611,15 @@
                 document.getElementById('setting-trade-risk').value = data.per_trade_risk_limit || 1.5;
                 document.getElementById('setting-daily-risk').value = data.daily_loss_limit || 5.0;
 
+                // --- NEW: Load saved AI settings from LocalBrowser Storage ---
+                const savedModel = localStorage.getItem('user_ai_model') || 'deepmatrix';
+                const savedKey = localStorage.getItem('user_api_key') || '';
+                
+                document.getElementById('setting-ai-model').value = savedModel;
+                document.getElementById('setting-api-key').value = savedKey;
+                document.getElementById('setting-ai-model').dispatchEvent(new Event('change')); // Trigger UI update
+                // -------------------------------------------------------------
+
                 if(data.prop_firm_mode) {
                     document.getElementById('prop-firm-btn').classList.add('active');
                     document.getElementById('prop-firm-btn').innerHTML = `<span>🛡️ Prop Firm Mode: ACTIVE</span>`;
@@ -617,20 +632,6 @@
             }
         }
 
-        function validateSettingsUI() {
-            const trInput = document.getElementById('setting-trade-risk');
-            const drInput = document.getElementById('setting-daily-risk');
-            const trWarn = document.getElementById('warn-trade-risk');
-            const drWarn = document.getElementById('warn-daily-risk');
-            if(parseFloat(trInput.value) > 2.0) { trInput.classList.add('input-error'); trWarn.style.display = 'block'; } 
-            else { trInput.classList.remove('input-error'); trWarn.style.display = 'none'; }
-            if(parseFloat(drInput.value) > 5.0) { drInput.classList.add('input-error'); drWarn.style.display = 'block'; } 
-            else { drInput.classList.remove('input-error'); drWarn.style.display = 'none'; }
-        }
-        
-        document.getElementById('setting-trade-risk').addEventListener('input', validateSettingsUI);
-        document.getElementById('setting-daily-risk').addEventListener('input', validateSettingsUI);
-
         document.getElementById('save-settings-btn').addEventListener('click', async () => {
             const btn = document.getElementById('save-settings-btn');
             btn.innerText = "Saving...";
@@ -642,6 +643,13 @@
                 const newMinRR = parseFloat(document.getElementById('setting-min-rr').value);
                 const newTradeRisk = parseFloat(document.getElementById('setting-trade-risk').value);
                 const newDailyRisk = parseFloat(document.getElementById('setting-daily-risk').value);
+
+                // --- NEW: Save BYOK details strictly to LocalBrowser Storage ---
+                const selectedModel = document.getElementById('setting-ai-model').value;
+                const apiKey = document.getElementById('setting-api-key').value;
+                localStorage.setItem('user_ai_model', selectedModel);
+                localStorage.setItem('user_api_key', apiKey);
+                // ---------------------------------------------------------------
 
                 const { error } = await supabaseClient.from('profiles').update({
                     equity: newEquity, leverage: newLeverage, telegram_chat_id: newTelegram, min_rr_ratio: newMinRR, per_trade_risk_limit: newTradeRisk, daily_loss_limit: newDailyRisk
@@ -932,17 +940,13 @@
         }
 
         document.getElementById('analyze-btn').addEventListener('click', async () => {
-            // --- NEW MARKET HOURS & HOLIDAY CHECK ---
             const now = new Date();
-            const day = now.getUTCDay(); // 0 = Sun, 1 = Mon ... 6 = Sat
+            const day = now.getUTCDay(); 
             const hour = now.getUTCHours();
-            const month = now.getUTCMonth(); // 0 = Jan, 11 = Dec
+            const month = now.getUTCMonth(); 
             const date = now.getUTCDate();
 
-            // Check 1: Is it the Weekend? (Friday 22:00 UTC to Sunday 21:00 UTC)
             const isWeekend = (day === 6) || (day === 0 && hour < 21) || (day === 5 && hour >= 22);
-            
-            // Check 2: Hardcoded Global Forex Holidays (Christmas & New Year's)
             const isChristmas = (month === 11 && date === 25);
             const isNewYear = (month === 0 && date === 1);
 
@@ -951,9 +955,8 @@
                 statusText.style.color = 'var(--warning)';
                 statusText.innerText = '🛑 Market Closed: DeepMatrix requires live tick data to calculate institutional probabilities. Please return when global markets reopen.';
                 alert("The global Forex markets are currently closed. \n\nAnalysis is paused to prevent inaccurate calculations on frozen volume data.");
-                return; // This stops the AI from running!
+                return; 
             }
-            // --- END MARKET HOURS CHECK ---
 
             const statusText = document.getElementById('system-status');
             const asset = document.getElementById('asset-select').value;
@@ -967,10 +970,21 @@
             const box = document.getElementById('confluence-box');
             const instruction = document.getElementById('click-instruction');
 
+            // --- NEW: Grab the BYOK settings to pass to backend ---
+            const userAiModel = localStorage.getItem('user_ai_model') || 'deepmatrix';
+            const userApiKey = localStorage.getItem('user_api_key') || '';
+            // ------------------------------------------------------
+
             btn.disabled = true; 
             icon.style.display = 'none';
             spinner.style.display = 'block';
-            btnText.innerText = 'Calculating Matrix...';
+            
+            let loadingText = 'Calculating Matrix...';
+            if(userAiModel === 'gpt4o') loadingText = 'Routing via GPT-4o...';
+            if(userAiModel === 'claude35') loadingText = 'Routing via Claude 3.5...';
+            if(userAiModel === 'llama3') loadingText = 'Routing via Groq...';
+            btnText.innerText = loadingText;
+
             grid.classList.add('loading');
             box.style.display = 'none';
             instruction.style.display = 'none';
@@ -979,7 +993,14 @@
                 // PASTE YOUR ACTUAL RENDER URL BELOW
                 const response = await fetch('https://ai-forex-backend-dth0.onrender.com/api/v2/analyze', {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ asset: asset, timeframe: timeframe, min_rr: minRR }) 
+                    // WE NOW PASS THE CUSTOM MODEL AND API KEY DIRECTLY TO THE SERVER
+                    body: JSON.stringify({ 
+                        asset: asset, 
+                        timeframe: timeframe, 
+                        min_rr: minRR,
+                        ai_model: userAiModel,
+                        api_key: userApiKey
+                    }) 
                 });
                 
                 const rawData = await response.json();
